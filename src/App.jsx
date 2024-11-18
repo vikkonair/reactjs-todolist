@@ -6,6 +6,7 @@ function App() {
   
   const [todos, setTodos] = useState([])
   const [todoValue, setTodoValue] = useState('')
+  const [message, setMessage] = useState('Type your to-dos on top to begin..')
 
   function persistData(newList) {
     localStorage.setItem('todos', JSON.stringify({todos: newList}))
@@ -41,6 +42,22 @@ function App() {
     localTodos = JSON.parse(localTodos).todos
     setTodos(localTodos)
   }, [])
+
+  useEffect(() => {
+    if(todos.length === 0) {
+      setMessage('Type your to-dos on top to begin..')
+    } else if(todos.length === 1) {
+      setMessage('Great, what else?')
+    } else if(todos.length === 2) {
+      setMessage('Your sure you gon do that..?')
+    } else if(todos.length === 3) {
+      setMessage('aight, keep goin')
+    } else if(todos.length > 3 && todos.length < 6) {
+      setMessage('you do you, keep grindin!')
+    } else if(todos.length > 6) {
+      setMessage('ok, you are planning way too much, get some rest')
+    }
+  }, [todos.length])
   
   return (
     <>
@@ -51,11 +68,7 @@ function App() {
             : "Not your Average To-Do List"}
         </h1>
        
-       <h3>{todos.length > 0
-          ? "Great, what else?"
-          : "Type your to-dos on top to begin.."
-        
-        }</h3>
+       <h3>{message}</h3>
     </>
   )
 }
